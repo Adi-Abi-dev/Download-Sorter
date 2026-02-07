@@ -1,11 +1,3 @@
-<file_path>
-go systray\readme.md
-</file_path>
-
-<edit_description>
-Create README.md with compilation and usage instructions
-</edit_description>
-
 # Go Systray Download Organizer
 
 This is a Go application that organizes files in the Downloads folder by moving them into subfolders based on file extensions. It runs in the system tray and monitors the Downloads directory for new files.
