@@ -26,18 +26,22 @@ jobs:
     # Build for Linux
     - name: Build Linux
       run: |
-        GOOS=linux GOARCH=amd64 go build -v -o myapp-linux ./...
+        GOOS=linux GOARCH=amd64 go build -v -o sorter ./...
 
     # Build for Windows (No terminal)
     - name: Build Windows
       run: |
-        GOOS=windows GOARCH=amd64 go build -v -ldflags="-H=windowsgui" -o myapp-windows.exe ./...
+        GOOS=windows GOARCH=amd64 go build -v -ldflags="-H=windowsgui" -o sorter.exe ./...
 
-    # Upload the binaries so you can download them from the Actions tab
-    - name: Upload Artifacts
+    # Separate Uploads to prevent shared zipping
+    - name: Upload Linux Binary
       uses: actions/upload-artifact@v4
       with:
-        name: binaries
-        path: |
-          myapp-linux
-          myapp-windows.exe
+        name: sorter
+        path: sorter
+
+    - name: Upload Windows Binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: sorter
+        path: sorter.exe
