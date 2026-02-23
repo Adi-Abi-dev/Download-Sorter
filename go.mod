@@ -1,6 +1,6 @@
 module go-systray
 
-go 1.20
+go 1.25.6
 
 require (
 	github.com/fsnotify/fsnotify v1.9.0
