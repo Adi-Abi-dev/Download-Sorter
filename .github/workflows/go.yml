@@ -1,4 +1,4 @@
-name: Go
+name: Build Cross-Platform
 
 on:
   push:
@@ -17,16 +17,27 @@ jobs:
       with:
         go-version: '1.20'
 
-    - name: Install Linux dependencies (AppIndicator/GTK)
+    - name: Install Linux dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y --no-install-recommends \
-          pkg-config \
-          libayatana-appindicator3-dev \
-          libgtk-3-dev
+          pkg-config libayatana-appindicator3-dev libgtk-3-dev
 
-    - name: Build
-      run: go build -v ./...
+    # Build for Linux
+    - name: Build Linux
+      run: |
+        GOOS=linux GOARCH=amd64 go build -v -o myapp-linux ./...
 
-    - name: Test
-      run: go test -v ./...
+    # Build for Windows (No terminal)
+    - name: Build Windows
+      run: |
+        GOOS=windows GOARCH=amd64 go build -v -ldflags="-H=windowsgui" -o myapp-windows.exe ./...
+
+    # Upload the binaries so you can download them from the Actions tab
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: binaries
+        path: |
+          myapp-linux
+          myapp-windows.exe
