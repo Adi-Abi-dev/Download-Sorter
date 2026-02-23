@@ -26,23 +26,25 @@ jobs:
     # Build for Linux
     - name: Build Linux
       run: |
-        GOOS=linux GOARCH=amd64 go build -v -o sorter ./...
+        GOOS=linux GOARCH=amd64 go build -v -o sorter-linux ./...
 
-    # Build for Windows (No terminal)
+    # Build for Windows (No terminal/GUI mode)
     - name: Build Windows
       run: |
-        GOOS=windows GOARCH=amd64 go build -v -ldflags="-H=windowsgui" -o sorter.exe ./...
+        GOOS=windows GOARCH=amd64 go build -v -ldflags="-H=windowsgui" -o sorter-windows.exe ./...
 
     # Upload Linux Binary
     - name: Upload Linux Binary
       uses: actions/upload-artifact@v4
       with:
-        name: sorter-linux  # Changed from 'sorter'
-        path: sorter
+        name: linux-executable
+        path: sorter-linux
+        if-no-files-found: error
 
     # Upload Windows Binary
     - name: Upload Windows Binary
       uses: actions/upload-artifact@v4
       with:
-        name: sorter-windows  # Changed from 'sorter'
-        path: sorter.exe
+        name: windows-executable
+        path: sorter-windows.exe
+        if-no-files-found: error
