@@ -1,47 +1,13 @@
-name: Build Cross-Platform
-
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.20'
-
-    - name: Install Linux dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y --no-install-recommends \
-          pkg-config libayatana-appindicator3-dev libgtk-3-dev
-
-    # Build for Linux
-    - name: Build Linux
-      run: |
-        GOOS=linux GOARCH=amd64 go build -v -o sorter ./...
-
-    # Build for Windows (No terminal)
-    - name: Build Windows
-      run: |
-        GOOS=windows GOARCH=amd64 go build -v -ldflags="-H=windowsgui" -o sorter.exe ./...
-
-    # Separate Uploads to prevent shared zipping
+# Upload Linux Binary
     - name: Upload Linux Binary
       uses: actions/upload-artifact@v4
       with:
-        name: sorter
+        name: sorter-linux  # Changed from 'sorter'
         path: sorter
 
+    # Upload Windows Binary
     - name: Upload Windows Binary
       uses: actions/upload-artifact@v4
       with:
-        name: sorter
+        name: sorter-windows  # Changed from 'sorter'
         path: sorter.exe
